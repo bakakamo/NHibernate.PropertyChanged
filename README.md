@@ -56,3 +56,8 @@ Session.SaveOrUpdate(typeof(Person).FullName, person);
 ```
 
 Because of these complications, it is recommended to use the first method. If you don't want to implement INotifyPropertyChanged by hand, you can use a tool like [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged "PropertyChanged.Fody").
+
+## Referecences ##
+Based on the following posts:
+[http://weblogs.asp.net/ricardoperes/archive/2012/06/19/implementing-an-interceptor-using-nhibernate-s-built-in-dynamic-proxy-generator.aspx](http://weblogs.asp.net/ricardoperes/archive/2012/06/19/implementing-an-interceptor-using-nhibernate-s-built-in-dynamic-proxy-generator.aspx)
+[http://ayende.com/blog/4106/nhibernate-inotifypropertychanged](http://ayende.com/blog/4106/nhibernate-inotifypropertychanged)
