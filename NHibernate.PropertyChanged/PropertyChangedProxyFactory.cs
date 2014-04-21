@@ -1,6 +1,9 @@
 ﻿namespace NHibernate.PropertyChanged
 {
     using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using Iesi.Collections.Generic;
     using NHibernate;
     using NHibernate.Engine;
     using NHibernate.Intercept;
@@ -9,13 +12,24 @@
 
     public class PropertyChangedProxyFactory : AbstractProxyFactory
     {
-        private readonly bool _entitiesCallPropertyChanged;
-        private readonly ProxyFactory _factory = new ProxyFactory();
         protected static readonly IInternalLogger _log = LoggerProvider.LoggerFor(typeof(PropertyChangedProxyFactory));
+        private readonly bool _entitiesHandlePropertyChanged;
+        private readonly ProxyFactory _factory = new ProxyFactory();
+        private Type[] _interfaces;
 
-        public PropertyChangedProxyFactory(bool entitiesCallPropertyChanged)
+        public PropertyChangedProxyFactory(bool entitiesHandlePropertyChanged)
         {
-            _entitiesCallPropertyChanged = entitiesCallPropertyChanged;
+            _entitiesHandlePropertyChanged = entitiesHandlePropertyChanged;
+        }
+
+        public override void PostInstantiate(string entityName, Type persistentClass, ISet<Type> interfaces, System.Reflection.MethodInfo getIdentifierMethod, System.Reflection.MethodInfo setIdentifierMethod, NHibernate.Type.IAbstractComponentType componentIdType)
+        {
+            base.PostInstantiate(entityName, persistentClass, interfaces, getIdentifierMethod, setIdentifierMethod, componentIdType);
+            _interfaces = Interfaces;
+            if (!_entitiesHandlePropertyChanged)
+            {
+                _interfaces = Interfaces.Concat(new[] { typeof(INotifyPropertyChanged) }).ToArray();
+            }
         }
 
         public override INHibernateProxy GetProxy(object id, ISessionImplementor session)
@@ -30,11 +44,11 @@
                     SetIdentifierMethod,
                     ComponentIdType,
                     session,
-                    _entitiesCallPropertyChanged);
+                    _entitiesHandlePropertyChanged);
 
                 object proxyInstance = IsClassProxy
-                    ? _factory.CreateProxy(PersistentClass, initializer, Interfaces)
-                    : _factory.CreateProxy(Interfaces[0], initializer, Interfaces);
+                    ? _factory.CreateProxy(PersistentClass, initializer, _interfaces)
+                    : _factory.CreateProxy(_interfaces[0], initializer, _interfaces);
 
                 return (INHibernateProxy)proxyInstance;
             }

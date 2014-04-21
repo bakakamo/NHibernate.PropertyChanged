@@ -11,7 +11,7 @@
     [Serializable]
     public class PropertyChangedLazyInitializer : DefaultLazyInitializer, IInterceptor
     {
-        private readonly bool _entityCallsPropertyChanged;
+        private readonly bool _entityHandlesPropertyChanged;
         private PropertyChangedEventHandler _changed = delegate { };
         private object _proxy;
 
@@ -23,10 +23,10 @@
             MethodInfo setIdentifierMethod,
             IAbstractComponentType componentIdType,
             ISessionImplementor session,
-            bool entityCallsPropertyChanged)
+            bool entityHandlesPropertyChanged)
             : base(entityName, persistentClass, id, getIdentifierMethod, setIdentifierMethod, componentIdType, session)
         {
-            _entityCallsPropertyChanged = entityCallsPropertyChanged;
+            _entityHandlesPropertyChanged = entityHandlesPropertyChanged;
         }
 
         #region Implementation of IInterceptor
@@ -35,7 +35,7 @@
         {
             var wasUninitialized = Target == null;
             base.Initialize();
-            if (_entityCallsPropertyChanged && wasUninitialized && Target != null)
+            if (_entityHandlesPropertyChanged && wasUninitialized && Target != null)
             {
                 ((INotifyPropertyChanged)Target).PropertyChanged += OnEntityPropertyChanged;
             }
@@ -65,7 +65,7 @@
                 returnValue = base.Intercept(info);
             }
 
-            if (!_entityCallsPropertyChanged && info.TargetMethod.Name.StartsWith("set_"))
+            if (!_entityHandlesPropertyChanged && info.TargetMethod.Name.StartsWith("set_"))
             {
                 var propertyName = info.TargetMethod.Name.Substring("set_".Length);
                 _changed(info.Target, new PropertyChangedEventArgs(propertyName));

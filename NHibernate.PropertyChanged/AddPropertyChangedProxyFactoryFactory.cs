@@ -3,7 +3,7 @@
     using NHibernate.Bytecode;
     using NHibernate.Proxy;
 
-    public class CallPropertyChangedProxyFactoryFactory : IProxyFactoryFactory
+    public class AddPropertyChangedProxyFactoryFactory : IProxyFactoryFactory
     {
         #region IProxyFactoryFactory Members
 
@@ -14,7 +14,7 @@
 
         public IProxyValidator ProxyValidator
         {
-            get { return new PropertyChangedDynProxyTypeValidator(); }
+            get { return new DynProxyTypeValidator(); }
         }
 
         public bool IsInstrumented(System.Type entityClass)

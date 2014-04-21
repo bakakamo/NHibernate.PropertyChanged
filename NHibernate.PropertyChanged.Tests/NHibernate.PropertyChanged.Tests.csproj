@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D2F68931-53A7-49D1-B1E9-2677008C9C77}</ProjectGuid>
+    <ProjectGuid>{A32C3D60-3B28-4986-8F6E-82D69B43ADD2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NHibernate.PropertyChanged</RootNamespace>
-    <AssemblyName>NHibernate.PropertyChanged</AssemblyName>
+    <RootNamespace>NHibernate.PropertyChanged.Tests</RootNamespace>
+    <AssemblyName>NHibernate.PropertyChanged.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,39 +29,55 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.92.0\lib\net20\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PropertyChangedDynProxyTypeValidator.cs" />
-    <Compile Include="PropertyChangedProxyFactory.cs" />
-    <Compile Include="AddPropertyChangedInterceptorProxyFactory.cs" />
-    <Compile Include="AddPropertyChangedProxyFactoryFactory.cs" />
-    <Compile Include="PropertyChangedProxyFactoryFactory.cs" />
-    <Compile Include="AddPropertyChangedInterceptor.cs" />
+    <Compile Include="AbstractTestFixtureFixture.cs" />
+    <Compile Include="WithoutPropertyChanged\Domain\Company.cs" />
+    <Compile Include="WithoutPropertyChanged\Domain\Person.cs" />
+    <Compile Include="WithoutPropertyChanged\TestWithoutPropertyChanged.cs" />
+    <Compile Include="WithPropertyChanged\TestWithPropertyChanged.cs" />
+    <Compile Include="WithPropertyChanged\Domain\Company.cs" />
+    <Compile Include="WithPropertyChanged\Domain\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyChangedLazyInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Key.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NHibernate.PropertyChanged\NHibernate.PropertyChanged.csproj">
+      <Project>{d2f68931-53a7-49d1-b1e9-2677008c9c77}</Project>
+      <Name>NHibernate.PropertyChanged</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
