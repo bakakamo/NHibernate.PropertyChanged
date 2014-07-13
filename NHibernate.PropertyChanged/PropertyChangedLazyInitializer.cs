@@ -41,7 +41,7 @@
             }
         }
 
-        public new object Intercept(InvocationInfo info)
+        public new virtual object Intercept(InvocationInfo info)
         {
             if (_proxy == null)
             {

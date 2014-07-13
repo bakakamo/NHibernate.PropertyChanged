@@ -36,15 +36,7 @@
         {
             try
             {
-                var initializer = new PropertyChangedLazyInitializer(
-                    EntityName,
-                    PersistentClass,
-                    id,
-                    GetIdentifierMethod,
-                    SetIdentifierMethod,
-                    ComponentIdType,
-                    session,
-                    _entitiesHandlePropertyChanged);
+                var initializer = CreatePropertyChangedLazyInitializer(id, session);
 
                 object proxyInstance = IsClassProxy
                     ? _factory.CreateProxy(PersistentClass, initializer, _interfaces)
@@ -63,6 +55,19 @@
         {
             var interceptor = new DefaultDynamicLazyFieldInterceptor(instanceToWrap);
             return _factory.CreateProxy(PersistentClass, interceptor, new[] { typeof(IFieldInterceptorAccessor) });
+        }
+
+        protected virtual PropertyChangedLazyInitializer CreatePropertyChangedLazyInitializer(object id, ISessionImplementor session)
+        {
+            return new PropertyChangedLazyInitializer(
+                EntityName,
+                PersistentClass,
+                id,
+                GetIdentifierMethod,
+                SetIdentifierMethod,
+                ComponentIdType,
+                session,
+                _entitiesHandlePropertyChanged);
         }
     }
 }
