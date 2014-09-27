@@ -9,6 +9,7 @@
     using NHibernate.Intercept;
     using NHibernate.Proxy;
     using NHibernate.Proxy.DynamicProxy;
+    using System.Collections.Generic;
 
     public class PropertyChangedProxyFactory : AbstractProxyFactory
     {
@@ -53,7 +54,7 @@
 
         public override object GetFieldInterceptionProxy(object instanceToWrap)
         {
-            var interceptor = new DefaultDynamicLazyFieldInterceptor(instanceToWrap);
+            var interceptor = new DefaultDynamicLazyFieldInterceptor();
             return _factory.CreateProxy(PersistentClass, interceptor, new[] { typeof(IFieldInterceptorAccessor) });
         }
 
